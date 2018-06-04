@@ -39,6 +39,11 @@ if [ "${DELAY_TIME}" == "**None**" ]; then
     DELAY_TIME=1800
 fi
 
+if [ "${DEL_VOLUMES}" == "**false**" ]; then
+  echo "=> DEL_VOLUMES not set. Will not delete volumes."
+  unset DEL_VOLUMES
+fi
+
 if [ "${KEEP_IMAGES}" == "**None**" ]; then
     unset KEEP_IMAGES
 fi
@@ -76,7 +81,7 @@ do
     if [ $DEBUG ]; then echo DEBUG: Starting loop; fi
 
     # Cleanup unused volumes
- if [${DEL_IMAGES} = "true"]; then
+ if [ $DEL_VOLUMES ]; then
     if [[ $(docker version --format '{{(index .Server.Version)}}' | grep -E '^[01]\.[012345678]\.') ]]; then
       echo "=> Removing unused volumes using 'docker-cleanup-volumes.sh' script"
       /docker-cleanup-volumes.sh
@@ -88,6 +93,7 @@ do
       done
     fi
   fi
+
     IFS='
  '
 
