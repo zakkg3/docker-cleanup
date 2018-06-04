@@ -87,7 +87,7 @@ do
       /docker-cleanup-volumes.sh
     else
       echo "=> Removing unused volumes using native 'docker volume' command"
-      for volume in $(docker volume ls -qf dangling=true); do
+      for volume in $(docker volume ls driver=local,dangling=true -q); do
         echo "Deleting ${volume}"
         docker volume rm "${volume}"
       done
