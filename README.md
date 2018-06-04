@@ -3,9 +3,9 @@ This image will periodically clean up exited containers and remove images and vo
 running container. Based on [tutumcloud/image-cleanup](https://github.com/tutumcloud/image-cleanup) and
 [chadoe/docker-cleanup-volumes](https://github.com/chadoe/docker-cleanup-volumes) with some small fixes.
 
-**WARNING: This script will remove all exited containers, data-only containers and unused images unless you 
-carefully exclude them. Take care if you mount /var/lib/docker into the container since that will clean 
-up all unused data volumes. If it's not compatible with your system or Docker version it may delete 
+**WARNING: This script will remove all exited containers, data-only containers and unused images unless you
+carefully exclude them. Take care if you mount /var/lib/docker into the container since that will clean
+up all unused data volumes. If it's not compatible with your system or Docker version it may delete
 all your volumes, even from under running containers.**
 
 Normally any Docker containers that exit are still kept on disk until *docker rm -v* is used to clean
@@ -19,8 +19,8 @@ The default parameters can be overridden by setting environment variables on the
 
  * **CLEAN_PERIOD=1800** - Interval in seconds to sleep after completing a cleaning run. Defaults to 1800 seconds = 30 minutes.
  * **DELAY_TIME=1800** - Seconds to wait before removing exited containers and unused images. Defaults to 1800 seconds = 30 minutes.
-* **DEL_VOLUMES** - If set to somthing differtn than the default "**false**" it will try to delete volumes also.
-* **KEEP_IMAGES** - List of images to avoid cleaning, e.g. "ubuntu:trusty, ubuntu:latest". Defaults to clean all unused images.
+ * **DEL_VOLUMES** - Set to 1 to clean up orphaned Docker volumes. */var/lib/docker* directory must to be mapped
+ * **KEEP_IMAGES** - List of images to avoid cleaning, e.g. "ubuntu:trusty, ubuntu:latest". Defaults to clean all unused images.
  * **KEEP_CONTAINERS** - List of images for exited or dead containers to avoid cleaning, e.g. "ubuntu:trusty, ubuntu:latest".
  * **KEEP_CONTAINERS_NAMED** - List of names for exited or dead containers to avoid cleaning, e.g. "my-container1, persistent-data".
  * **LOOP** - Add the ability to do non-looped cleanups, run it once and exit. Options are true, false. Defaults to true to run it forever in loops.
@@ -45,12 +45,12 @@ However it will not match
  * :tag
  * [[:alpha:]]:tag
 
-By default, both are set to **\*\*None\*\*** which is the same as the blank string.  If you want to keep ALL images or containers, effectively disabling this 
-part of the cleanup, then you should use **\*:\*** to match all images.  Do not 
+By default, both are set to **\*\*None\*\*** which is the same as the blank string.  If you want to keep ALL images or containers, effectively disabling this
+part of the cleanup, then you should use **\*:\*** to match all images.  Do not
 use a bare **\*** as this will be taken as a filename match.
 
 ## Deployment
-The image uses the Docker client to to list and remove containers and images. For this reason the Docker client and socket is mapped into the container.
+The image uses the Docker client to list and remove containers and images. For this reason the Docker client and socket is mapped into the container.
 
 If the */var/lib/docker* directory is mapped into the container this script will also clean up orphaned Docker volumes.
 
